@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'my_first_node'
+package_name = 'my_first_package'
 
 setup(
     name=package_name,
@@ -10,6 +10,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        # Install all launch files
+        ('share/' + package_name + '/launch', ['launch/main.launch.py']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,8 +22,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'fsm = my_first_node.fsm_node:main',
-            'helper = my_first_node.helper_node:main'
+            f'my_first_node = {package_name}.my_first_node:main',
+            f'helper_node = {package_name}.helper_node:main'
         ]
     },
 )

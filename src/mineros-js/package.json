@@ -12,6 +12,7 @@
     "generate-ros-messages": "node_modules/.bin/generate-ros-messages"
   },
   "dependencies": {
-    "rclnodejs": "^0.27.3"
+    "mineflayer-collectblock": "^1.6.0",
+    "rclnodejs": "^0.27.5"
   }
 }

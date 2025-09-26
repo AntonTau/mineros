@@ -1,12 +1,24 @@
-# ROS2
+# ROS2 build and install directories
 build/
 install/
 log/
+
+# Python virtual environments and cache
 venv/
-docs/itemName2id.txt
+.venv/
+__pycache__/
+*.pyc
+*.pyo
 
-# Node
-node_modules
+# Node.js dependencies
+node_modules/
+.npm/
 
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
 
-```
+# Project-specific
+/docs/itemName2id.txt

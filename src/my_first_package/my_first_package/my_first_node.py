@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import time
 import rclpy
 from rclpy.node import Node
@@ -6,7 +7,7 @@ from typing import Any
 from geometry_msgs.msg import PoseStamped
 from mineros_inter.srv import BlockInfo, BotPos
 
-class MyFirstFSM(Node):
+class MyFirstNode(Node):
     """
     This class encompases the skeleton of a ROS2 node. It inherits from the class Node, which is the base class
     for all nodes in ROS2. The class Node is defined in the rclpy package. The class Node has a constructor that
@@ -39,24 +40,35 @@ class MyFirstFSM(Node):
             BotPos,
             '/mineros/get_bot_position',
         )
+        self.get_logger().info('My first node created')
         
         # Task 2
         # To make the bot move in a square we need to know the bots location and we need to be able to move the bot
         # set up the required publisher and subscriber here:
         
+        last_result_log_time = 0.0
+        result_log_interval = 1.0  # seconds
         while 1:
             while self.bot_pos_service.wait_for_service(timeout_sec=1.0) == False:
                 self.get_logger().info('Waiting for service')
             request = BotPos.Request()
             future = self.bot_pos_service.call_async(request)
             rclpy.spin_until_future_complete(self, future)
-            self.get_logger().info('Result: %s' % future.result())
-        
+
+            result = future.result()
+            now = time.time()
+            if now - last_result_log_time > result_log_interval:
+                if isinstance(result.bot_pos, PoseStamped):
+                    pos = result.bot_pos.pose.position
+                    self.get_logger().info(f'Result: Point(x={pos.x:.2f}, y={pos.y:.2f}, z={pos.z:.2f})')
+                else:
+                    self.get_logger().warn(f'Result is not a PoseStamped: {result.bot_pos}')
+                last_result_log_time = now        
         
         
 def main(args=None):
     rclpy.init(args=args)
-    node = MyFirstFSM()
+    node = MyFirstNode()
     rclpy.spin(node)
     node.destroy_node()
-    rclpy.shutdown()    
+    rclpy.shutdown()
