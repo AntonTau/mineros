@@ -29,6 +29,8 @@ bot.once('spawn', () => {
   bot.chat('Hello, I am MinerosBot')
   const defaultMove = new Movements(bot)
   defaultMove.allow1by1towers = false
+  defaultMove.canDig = false
+  defaultMove.scafoldingBlocks = []
   bot.pathfinder.setMovements(defaultMove)
   bot.pathfinder.thinkTimeout = 10000
   registry = require('prismarine-registry')(bot.version)
