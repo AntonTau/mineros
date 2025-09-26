@@ -45,15 +45,13 @@ npm -v    # should be avove 9.0
 ```shell
 cd src/mineros-js
 npm install mineflayer-collectblock rclnodejs
-cd -
 ``` 
 
 ### Building the MineROS bot
 1) Generate the javascript ROS message interface
 ```shell
-cd src/mineros-js
 npx generate-ros-messages
-cd -
+cd ..
 ```
 2) Build the ROS packages:
 ```shell
