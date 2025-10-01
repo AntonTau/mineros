@@ -1,12 +1,12 @@
 #include "my_first_behaviourtree/move_to.hpp"
 
 bool MoveTo::setRequest(Request::SharedPtr& request) {
-    BT::Expected<geometry_msgs::msg::Point> msg = getInput<geometry_msgs::msg::Point>("target_point");
+    BT::Expected<geometry_msgs::msg::PoseStamped> msg = getInput<geometry_msgs::msg::PoseStamped>("target_point");
     if (!msg) {
         RCLCPP_ERROR(rclcpp::get_logger("MoveTo"), "MoveTo: missing required input [target_point]: %s", msg.error().c_str());
         return false;
     }
-    request->pose.pose.position = msg.value();
+    request->pose.pose.position = msg.value().pose.position;
     setOutput("currently_moving", true);
     return true;
 }

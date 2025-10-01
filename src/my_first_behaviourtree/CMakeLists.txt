@@ -14,6 +14,48 @@ find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(mineros_inter REQUIRED)
 
+add_library(
+  test_libs
+  src/current_position.cpp
+  src/determine_next_position.cpp
+  src/move_to.cpp
+)
+
+target_include_directories(test_libs PUBLIC include)
+
+add_executable(
+  launch
+  launch.cpp
+)
+
+target_link_libraries(launch
+  test_libs
+)
+
+ament_target_dependencies(test_libs
+  rclcpp
+  behaviortree_ros2
+  behaviortree_cpp
+  geometry_msgs
+  std_msgs
+  mineros_inter
+)
+
+ament_target_dependencies(launch
+  rclcpp
+  behaviortree_ros2
+  behaviortree_cpp
+  geometry_msgs
+  std_msgs
+  mineros_inter
+)
+
+
+
+install(TARGETS launch
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
@@ -25,5 +67,6 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
 
 ament_package()
