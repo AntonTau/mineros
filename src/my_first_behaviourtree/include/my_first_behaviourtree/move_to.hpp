@@ -3,6 +3,7 @@
 #include <rclcpp/logger.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/point.hpp>
+#include <geometry_msgs/msg/pose_stamped.hpp>
 #include "behaviortree_ros2/bt_service_node.hpp"
 #include "behaviortree_ros2/ros_node_params.hpp"
 #include "mineros_inter/srv/move_to.hpp"
@@ -19,7 +20,7 @@ class MoveTo : public BT::RosServiceNode<MoveToService> {
         static BT::PortsList providedPorts()
         {
             return providedBasicPorts({ BT::OutputPort<bool>("currently_moving"), 
-                                        BT::InputPort<geometry_msgs::msg::Point>("target_point") });
+                                        BT::InputPort<geometry_msgs::msg::PoseStamped>("target_point") });
         }
 
         bool setRequest(Request::SharedPtr& request) override;
