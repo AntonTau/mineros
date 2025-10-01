@@ -37,22 +37,30 @@ public:
         // Vector orient
         request->block.face_vector.y = 1;
 
-        auto future = client_->async_send_request(request);
 
-        if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) 
-        == rclcpp::FutureReturnCode::SUCCESS) 
+        try
         {
-            auto result = future.get();
-            if(result->success) {
-                RCLCPP_INFO(this->get_logger(), "Plassering av blokk fullført");
+            auto future = client_->async_send_request(request);
+
+            if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) 
+            == rclcpp::FutureReturnCode::SUCCESS) 
+            {
+                auto result = future.get();
+                if(result->success) {
+                    RCLCPP_INFO(this->get_logger(), "Plassering av blokk fullført");
+                } else {
+                    RCLCPP_INFO(this->get_logger(), "Plassering av blokk feilet");
+                }
             } else {
-                RCLCPP_INFO(this->get_logger(), "Plassering av blokk feilet");
+                RCLCPP_INFO(this->get_logger(), "Kunne ikke kalle servicen");
             }
-        } else {
-            RCLCPP_INFO(this->get_logger(), "Kunne ikke kalle servicen");
+
         }
-
-
+        catch(const std::exception& e)
+        {
+            RCLCPP_ERROR(this->get_logger(), "Exception caught %s", e.what());
+        }
+        
     }
 
 private:
@@ -67,4 +75,4 @@ int main(int argc, char **argv)
   std::make_shared<PlaceBlock>();
   rclcpp::shutdown();
   return 0;
-};
+}
