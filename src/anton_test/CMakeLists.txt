@@ -18,6 +18,7 @@ find_package(mineros_inter REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "../mineros_interface/srv/BotPos.srv"
   "../mineros_interface/srv/FindBlocks.srv"
+  "../mineros_interface/srv/SimplePlaceBlock.srv"
   DEPENDENCIES geometry_msgs
 )
 
