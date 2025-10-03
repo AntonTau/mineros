@@ -2,3 +2,9 @@
 	path = src/mineros_interface
 	url = https://github.com/AscendNTNU/mineros_interfaces.git
 	branch = main
+[submodule "src/BehaviorTree.ROS2"]
+	path = src/BehaviorTree.ROS2
+	url = https://github.com/BehaviorTree/BehaviorTree.ROS2.git
+[submodule "src/BehaviorTree.CPP"]
+	path = src/BehaviorTree.CPP
+	url = https://github.com/BehaviorTree/BehaviorTree.CPP.git
