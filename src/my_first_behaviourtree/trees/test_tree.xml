@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="TestTree">
+    <Sequence>
+        <Repeat num_cycles="10">
+            <Sequence>
+                <CurrentPosition current_position="{current_position}"/>
+                <DetermineNextPosition  step="1"
+                                        current_position="{current_position}"
+                                        direction="1"
+                                        target_point="{target_point}"/>
+                <MoveTo currently_moving="{currently_moving}"
+                        target_point="{target_point}"/>
+                <CurrentPosition current_position="{current_position}"/>
+                <DetermineNextPosition  step="1"
+                                        current_position="{current_position}"
+                                        direction="1"
+                                        target_point="{target_point}"/>
+                <MoveTo currently_moving="{currently_moving}"
+                        target_point="{target_point}"/>
+                <CurrentPosition current_position="{current_position}"/>
+                <DetermineNextPosition  step="1"
+                                        current_position="{current_position}"
+                                        direction="0"
+                                        target_point="{target_point}"/>
+                <MoveTo currently_moving="{currently_moving}"
+                        target_point="{target_point}"/>
+                <CurrentPosition current_position="{current_position}"/>
+                <DetermineNextPosition  step="1"
+                                        current_position="{current_position}"
+                                        direction="0"
+                                        target_point="{target_point}"/>
+                <MoveTo currently_moving="{currently_moving}"
+                        target_point="{target_point}"/>
+                <CurrentPosition current_position="{current_position}"/>
+                <DetermineNextPosition  step="-1"
+                                        current_position="{current_position}"
+                                        direction="1"
+                                        target_point="{target_point}"/>
+                <MoveTo currently_moving="{currently_moving}"
+                        target_point="{target_point}"/>
+                <CurrentPosition current_position="{current_position}"/>
+                <DetermineNextPosition  step="-1"
+                                        current_position="{current_position}"
+                                        direction="1"
+                                        target_point="{target_point}"/>
+                <MoveTo currently_moving="{currently_moving}"
+                        target_point="{target_point}"/>
+                <CurrentPosition current_position="{current_position}"/>
+                <DetermineNextPosition  step="-1"
+                                        current_position="{current_position}"
+                                        direction="0"
+                                        target_point="{target_point}"/>
+                <MoveTo currently_moving="{currently_moving}"
+                        target_point="{target_point}"/>
+                <CurrentPosition current_position="{current_position}"/>
+                <DetermineNextPosition  step="-1"
+                                        current_position="{current_position}"
+                                        direction="0"
+                                        target_point="{target_point}"/>
+                <MoveTo currently_moving="{currently_moving}"
+                        target_point="{target_point}"/>
+            </Sequence>
+        </Repeat>
+    </Sequence>
+  </BehaviorTree>
+</root>
