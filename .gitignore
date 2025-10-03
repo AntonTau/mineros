@@ -2,8 +2,7 @@
 build/
 install/
 log/
-/compile_commands.json
-.cache
+.cache/
 
 # Python virtual environments and cache
 venv/
