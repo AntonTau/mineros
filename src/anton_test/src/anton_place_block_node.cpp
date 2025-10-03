@@ -1,6 +1,9 @@
 #include <geometry_msgs/msg/detail/pose_stamped__struct.hpp>
 #include <memory>
 #include <mineros_inter/srv/detail/inventory__struct.hpp>
+#include <rclcpp/executors.hpp>
+#include <rclcpp/future_return_code.hpp>
+#include <rclcpp/logging.hpp>
 #include <rclcpp/rclcpp.hpp>
 
 // Service
@@ -29,12 +32,14 @@ public:
 
 
         client_ = this->create_client<mineros_inter::srv::PlaceBlock>("/mineros/interaction/place_block");
-        inventory_client_= this->create_client<mineros_inter::srv::Inventory>("/mineros/inventory/contents");
-
-
 
         while (!client_->wait_for_service(1s)) {
             RCLCPP_INFO(this->get_logger(), "Venter på place_block service");
+        }
+
+        inventory_client_= this->create_client<mineros_inter::srv::Inventory>("/mineros/inventory/contents");
+
+        while(!inventory_client_->wait_for_service(1s)){
         }
 
         auto request = std::make_shared<mineros_inter::srv::PlaceBlock::Request>();
@@ -42,7 +47,7 @@ public:
         // Block pose and orientation
         request->block.block_pose.position.x = 115;
         request->block.block_pose.position.y = 103;
-        request->block.block_pose.position.z = 123;
+        request->block.block_pose.position.z = 124;
         request->block.block_pose.orientation.w = 1;
         
         // Item id
@@ -89,6 +94,28 @@ private:
 
         auto inventory_request = std::make_shared<mineros_inter::srv::Inventory::Request>();
 
+        auto future = inventory_client_->async_send_request(inventory_request);
+
+        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(), future)!= rclcpp::FutureReturnCode::SUCCESS)
+        {
+            RCLCPP_ERROR(this->get_logger(), "Failed to call inventory service");
+            response->success = false;
+            return;
+        }
+
+        auto inventory_response = future.get();
+        bool found_block = false;
+        
+        // for (const auto &item : inventory_response->items) {
+        //     if(item.id == 22 || item.id == 24) {
+        //         found_block = true;
+        //         break;
+        //     }
+        // }
+
+
+
+        
     }
 
 };
