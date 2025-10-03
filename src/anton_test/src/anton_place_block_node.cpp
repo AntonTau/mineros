@@ -66,7 +66,7 @@ public:
 private:
     rclcpp::Client<mineros_inter::srv::PlaceBlock>::SharedPtr client_;
 
-
+    
 };
 
 int main(int argc, char **argv)
