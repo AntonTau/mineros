@@ -18,7 +18,7 @@
 
 #define MINEROS_GETPOS_TOPIC "/mineros/local_position/pose"
 #define MINEROS_GETBLOCKS_TOPIC "/mineros/mining/find_blocks"
-#define MINEROS_MINEBLOCK_TOPIC "mineros/mining/mine_block"
+#define MINEROS_MINEBLOCK_TOPIC "/mineros/mining/mine_block"
 
 
 using std::placeholders::_1;
@@ -74,35 +74,30 @@ class MinerosNode : public rclcpp::Node {
 							msg->pose.position.y,
 							msg->pose.position.z);
 					this->pose = *msg;
-					/*
 					// Only look for blocks to mine if bot has moved
-					if (!this->pose = this->previous_pose){
+					if (this->pose.pose.position.x != this->previous_pose.pose.position.x ||
+							this->pose.pose.position.y != this->previous_pose.pose.position.y ||
+							this->pose.pose.position.z != this->previous_pose.pose.position.z) {
 						// Make request to FindBlock service
 						auto request = std::make_shared<FindBlocks::Request>();
 						request->blockid = 68;
 						request->max_distance = 4;
-						request->count = 10; //idk
+						request->count = 10;
 
-						auto future = this->findblocks_client_->async_send_request(request, [this](rclcpp::Client<FindBlock>::SharedFuture result) {
-							this->blocks_to_mine = *msg;
+						auto future = this->findblocks_client_->async_send_request(request, [this](rclcpp::Client<FindBlocks>::SharedFuture result) {
+							this->blocks_to_mine = result.get()->blocks;
+							for (const auto& block : this->blocks_to_mine.poses) {
+								auto mine_request = std::make_shared<MineBlock::Request>();
+								mine_request->block.position.x = block.position.x;
+								mine_request->block.position.y = block.position.y;
+								mine_request->block.position.z = block.position.z;
+								this->mineblock_client_->async_send_request(mine_request, [this](rclcpp::Client<MineBlock>::SharedFuture mine_result) {
+									this->success = mine_result.get()->success;
+								});
+							}
 						});
-
-
-						for (Pose block : blocks_to_mine) {
-							auto request = std::make_shared<MineBlock::Request>();
-							request->block.position.x = block.position.x;
-							request->block.position.y = block.position.y;
-							request->block.position.z = block.position.z;
-
-							auto future = this->mineblock_client_->async_send_request(request, [this](rclcpp::Client<MineBlock>::SharedFuture result) {
-							this->success = *result.success;
-						});
-
-						}
-
 					}
-
 					this->previous_pose = this->pose;
-					*/
+					
 				}
 };
